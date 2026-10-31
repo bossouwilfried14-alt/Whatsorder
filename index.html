@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f97316">
+<title>WhatsOrder — Votre boutique, vos commandes WhatsApp</title>
+<style>
+:root{--orange:#f97316;--orange2:#ea580c;--ink:#171717;--muted:#737373;--line:#e5e5e5;--bg:#fafafa;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:700}
+.primary{background:var(--orange);color:white}
+.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
+header{background:#111;color:#fff;position:sticky;top:0;z-index:5;border-bottom:3px solid var(--orange)}
+.nav{max-width:1150px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}
+.logo{width:36px;height:36px;border-radius:11px;background:var(--orange);display:grid;place-items:center;color:#111;font-weight:1000}
+.nav-actions{display:flex;gap:8px;align-items:center}
+.lang{background:#292929;color:white;border:1px solid #444}
+main{max-width:1150px;margin:auto;padding:28px 20px 70px}
+.hero{background:linear-gradient(120deg,#171717,#29201a);color:white;border-radius:24px;padding:36px;display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center;overflow:hidden}
+.eyebrow{color:#fdba74;text-transform:uppercase;font-size:12px;font-weight:900;letter-spacing:1.5px}
+.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.04;margin:12px 0}
+.hero p{color:#d4d4d4;max-width:570px}
+.hero-art{background:#f97316;border-radius:22px;padding:22px;color:#111;transform:rotate(2deg)}
+.mocktop{display:flex;justify-content:space-between;font-weight:900}
+.mockbox{background:#fff;border-radius:15px;padding:14px;margin-top:14px}
+.mockline{height:9px;background:#e5e5e5;border-radius:20px;margin:9px 0}
+.mockline.short{width:55%}
+.mockpill{display:inline-block;background:#171717;color:#fff;padding:7px 10px;border-radius:20px;font-size:11px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 15px;flex-wrap:wrap}
+.toolbar h2{margin:0;font-size:23px}
+.search{max-width:300px;width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.product{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.product img{width:100%;height:190px;object-fit:cover;background:#f5f5f4}
+.product-body{padding:15px;display:flex;flex-direction:column;gap:7px;flex:1}
+.product h3{margin:0;font-size:17px}
+.muted{color:var(--muted);font-size:13px}
+.price{font-weight:900;font-size:18px;color:var(--orange2)}
+.product-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:8px}
+.section{margin-top:34px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feature{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.feature b{display:block;margin:8px 0}
+.feature .ico{font-size:24px}
+footer{background:#111;color:#aaa;padding:25px 20px;text-align:center;font-size:13px}
+.modal-back{position:fixed;inset:0;background:#0008;z-index:10;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-back.open{display:flex}
+.modal{background:white;border-radius:20px;max-width:650px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+.modal-head{display:flex;justify-content:space-between;align-items:center}
+.close{background:#f5f5f5;padding:8px 12px}
+.field{display:flex;flex-direction:column;gap:5px;margin:12px 0}
+.field label{font-size:13px;font-weight:800}
+.field input,.field textarea{border:1px solid var(--line);border-radius:10px;padding:11px;width:100%;background:white}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.admin-list{display:grid;gap:9px}
+.admin-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px;border:1px solid var(--line);border-radius:12px}
+.danger{background:#fee2e2;color:#991b1b}
+.notice{padding:12px;border-radius:12px;background:#fff7ed;color:#9a3412;font-size:13px;margin:12px 0}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:25px}.hero-art{display:none}.grid{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:1fr}.nav{padding:11px 14px}}
+@media(max-width:480px){main{padding:18px 13px 50px}.grid{grid-template-columns:1fr}.product img{height:210px}.hero h1{font-size:38px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="nav">
+<div class="brand"><span class="logo">W</span><span>WhatsOrder</span></div>
+<div class="nav-actions">
+<button class="lang" id="langBtn">EN</button>
+<button class="secondary" id="adminBtn">Espace vendeur</button>
+<button class="primary" id="shopBtn">Ma boutique</button>
+</div>
+</div>
+</header>
+<main>
+<section class="hero">
+<div>
+<div class="eyebrow">La vente devient simple</div>
+<h1>Ta boutique en ligne.<br>Tes commandes sur WhatsApp.</h1>
+<p>Présente tes produits, affiche tes prix et laisse tes clients commander directement avec WhatsApp. Simple, rapide et pensé pour les petits commerces.</p>
+<button class="primary" id="heroOrder">Découvrir les produits</button>
+</div>
+<div class="hero-art">
+<div class="mocktop"><span>WhatsOrder</span><span>● ● ●</span></div>
+<div class="mockbox">
+<b>Boutique tendance</b>
+<div class="mockline"></div><div class="mockline short"></div>
+<div style="display:flex;gap:8px;margin-top:15px">
+<div style="background:#fed7aa;border-radius:10px;height:65px;flex:1"></div>
+<div style="background:#e5e5e5;border-radius:10px;height:65px;flex:1"></div>
+</div>
+<div style="margin-top:12px"><span class="mockpill">Commander sur WhatsApp ↗</span></div>
+</div>
+</div>
+</section>
+<div class="toolbar" id="catalog">
+<h2>Produits à découvrir</h2>
+<input class="search" id="search" placeholder="Rechercher un produit…">
+</div>
+<div class="grid" id="products"></div>
+<section class="section">
+<div class="toolbar"><h2>Pourquoi WhatsOrder ?</h2></div>
+<div class="features">
+<div class="feature"><div class="ico">🛍️</div><b>Ta vitrine en ligne</b><span class="muted">Présente tes articles avec photos, descriptions et prix.</span></div>
+<div class="feature"><div class="ico">💬</div><b>Commandes WhatsApp</b><span class="muted">Tes clients t'envoient leur commande en un clic.</span></div>
+<div class="feature"><div class="ico">📱</div><b>Pensé pour mobile</b><span class="muted">Une expérience simple sur téléphone comme sur ordinateur.</span></div>
+</div>
+</section>
+<section class="section panel">
+<h2>Tu es commerçant ?</h2>
+<p class="muted">Personnalise cette boutique de démonstration avec tes propres produits et ton numéro WhatsApp.</p>
+<button class="primary" id="sellerCta">Ouvrir l'espace vendeur</button>
+<div class="notice">Version de démonstration : les données sont enregistrées uniquement dans ce navigateur. Ce prototype n'a pas encore de comptes utilisateurs ni de base de données en ligne.</div>
+</section>
+</main>
+<footer>© <span id="year"></span> WhatsOrder · La simplicité au service du commerce.</footer>
+<div class="modal-back" id="modal">
+<div class="modal">
+<div class="modal-head"><h2 id="modalTitle">Espace vendeur</h2><button class="close" id="closeModal">✕</button></div>
+<div id="modalContent"></div>
+</div>
+</div>
+<script>
+const translations={
+fr:{order:"Commander",noProducts:"Aucun produit trouvé.",admin:"Espace vendeur",phone:"Numéro WhatsApp (avec indicatif, ex. 22890123456)",save:"Enregistrer le numéro",add:"Ajouter un produit",name:"Nom du produit",description:"Description",price:"Prix en FCFA",image:"URL de la photo (facultatif)",saveProduct:"Ajouter",products:"Mes produits",delete:"Supprimer",saved:"Enregistré.",phoneMissing:"Ajoute d'abord ton numéro WhatsApp dans l'espace vendeur.",orderMsg:"Bonjour, je souhaite commander :",empty:"Aucun produit pour le moment."},
+en:{order:"Order",noProducts:"No products found.",admin:"Seller space",phone:"WhatsApp number (with country code, e.g. 22890123456)",save:"Save number",add:"Add a product",name:"Product name",description:"Description",price:"Price in XOF",image:"Photo URL (optional)",saveProduct:"Add product",products:"My products",delete:"Delete",saved:"Saved.",phoneMissing:"First add your WhatsApp number in the seller space.",orderMsg:"Hello, I would like to order:",empty:"No products yet."}
+};
+let lang="fr";
+let phone=localStorage.getItem("wo_phone")||"";
+let items=JSON.parse(localStorage.getItem("wo_items")||"null")||[
+{id:1,name:"Sac élégant",desc:"Sac pratique pour tous les jours.",price:12500,img:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800"},
+{id:2,name:"Baskets urbaines",desc:"Confortables et faciles à porter.",price:18000,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800"},
+{id:3,name:"Montre classique",desc:"Un style simple et intemporel.",price:15000,img:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800"}
+];
+const $=id=>document.getElementById(id);
+const t=k=>translations[lang][k]||k;
+function persist(){localStorage.setItem("wo_items",JSON.stringify(items));localStorage.setItem("wo_phone",phone)}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+const q=$("search").value.toLowerCase();
+$("products").innerHTML="";
+const shown=items.filter(p=>(p.name+" "+p.desc).toLowerCase().includes(q));
+if(!shown.length){$("products").innerHTML=`<div class="panel">${t("noProducts")}</div>`;return}
+shown.forEach(p=>{
+const el=document.createElement("article");
+el.className="product";
+el.innerHTML=`<img src="${safe(p.img||"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800")}" alt=""><div class="product-body"><h3>${safe(p.name)}</h3><div class="muted">${safe(p.desc)}</div><div class="product-foot"><span class="price">${Number(p.price).toLocaleString("fr-FR")} FCFA</span><button class="primary" data-order="${p.id}">${t("order")}</button></div></div>`;
+$("products").appendChild(el);
+});
+}
+function openModal(){$("modal").classList.add("open");sellerPanel()}
+function closeModal(){$("modal").classList.remove("open")}
+function sellerPanel(){
+$("modalTitle").textContent=t("admin");
+$("modalContent").innerHTML=`
+<div class="field"><label>${t("phone")}</label><input id="phoneInput" value="${safe(phone)}" placeholder="22890123456"></div>
+<button class="primary" id="savePhone">${t("save")}</button><p id="saveStatus" class="muted"></p>
+<hr><h3>${t("add")}</h3>
+<div class="field"><label>${t("name")}</label><input id="pName"></div>
+<div class="field"><label>${t("description")}</label><textarea id="pDesc" rows="2"></textarea></div>
+<div class="row">
+<div class="field"><label>${t("price")}</label><input id="pPrice" type="number" min="0"></div>
+<div class="field"><label>${t("image")}</label><input id="pImg"></div>
+</div>
+<button class="primary" id="addProduct">${t("saveProduct")}</button>
+<hr><h3>${t("products")}</h3><div class="admin-list" id="adminList"></div>`;
+$("savePhone").onclick=()=>{
+phone=$("phoneInput").value.replace(/\D/g,"");
+persist();
+$("saveStatus").textContent=t("saved");
+};
+$("addProduct").onclick=()=>{
+let name=$("pName").value.trim(),price=Number($("pPrice").value);
+if(!name||!price){alert("Nom et prix obligatoires");return}
+items.push({id:Date.now(),name,desc:$("pDesc").value.trim(),price,img:$("pImg").value.trim()});
+persist();sellerPanel();render();
+};
+adminList();
+}
+function adminList(){
+const list=$("adminList");if(!list)return;
+list.innerHTML="";
+if(!items.length)list.textContent=t("empty");
+items.forEach(p=>{
+let el=document.createElement("div");el.className="admin-item";
+el.innerHTML=`<div><b>${safe(p.name)}</b><div class="muted">${Number(p.price).toLocaleString("fr-FR")} FCFA</div></div><button class="danger" data-del="${p.id}">${t("delete")}</button>`;
+list.appendChild(el);
+});
+}
+function order(id){
+if(!phone){openModal();alert(t("phoneMissing"));return}
+const p=items.find(x=>x.id==id);if(!p)return;
+const msg=encodeURIComponent(`${t("orderMsg")} ${p.name} — ${Number(p.price).toLocaleString("fr-FR")} FCFA`);
+window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
+}
+$("langBtn").onclick=()=>{lang=lang==="fr"?"en":"fr";$("langBtn").textContent=lang==="fr"?"EN":"FR";render()};
+$("adminBtn").onclick=openModal;
+$("sellerCta").onclick=openModal;
+$("shopBtn").onclick=()=>$("catalog").scrollIntoView({behavior:"smooth"});
+$("heroOrder").onclick=()=>$("catalog").scrollIntoView({behavior:"smooth"});
+$("closeModal").onclick=closeModal;
+$("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};
+$("search").oninput=render;
+$("products").onclick=e=>{let b=e.target.closest("[data-order]");if(b)order(b.dataset.order)};
+$("modalContent").onclick=e=>{
+let b=e.target.closest("[data-del]");
+if(b){items=items.filter(p=>p.id!=b.dataset.del);persist();sellerPanel();render()}
+};
+$("year").textContent=new Date().getFullYear();
+render();
+</script>
+</body>
+  </html>
